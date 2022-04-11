@@ -12,7 +12,9 @@ import com.revature.spring_mvc.util.datasource.HibernateUtil;
 
 @Repository
 public class LoginDAO {
+	// no need for logger here bc aspectj being our best friend
 	public User findByUsernameAndPassword(String username, String password) {
+		// logs before and after no more (handled by @Before in LoggingAspect)
 		try {
 			Session session = HibernateUtil.getSession();
 			Query query = session.createQuery("from User u where u.username = :username and u.password = :password");
@@ -27,6 +29,7 @@ public class LoginDAO {
 			return null;
 		} finally {
 			HibernateUtil.closeSession();
+			// finally log
 		}
 	}
 	
