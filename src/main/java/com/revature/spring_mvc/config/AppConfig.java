@@ -25,6 +25,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @ComponentScan("com.revature")
+@EnableAspectJAutoProxy(proxyTargetClass = true) // You need this in order to tell spring that you're using AOP
 public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 
 	@Bean

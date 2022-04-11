@@ -2,6 +2,8 @@ package com.revature.spring_mvc.web.controllers;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.revature.spring_mvc.exceptions.AuthenticationException;
+import com.revature.spring_mvc.exceptions.ResourcePersistenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,24 +33,24 @@ public class TestController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/test1")
 	public @ResponseBody String test1() {
-		return "/spring-mvc-demo/test/test1 works!";
+		return "/spring-aop/test/test1 works!";
 	}
 
 	@GetMapping("/test2")
 	public @ResponseBody String test2() {
-		return "/spring-mvc-demo/test/test2 works!";
+		return "/spring-aop/test/test2 works!";
 	}
 
 	@GetMapping("/test3")
 	public @ResponseBody String test3(@RequestParam String someValue,
 			@RequestParam(value = "anotherValue", required = false) String whatevs) {
-		return "/spring-mvc-demo/test/test3 works! Provided values " + someValue + " and " + whatevs;
+		return "/spring-aop/test/test3 works! Provided values " + someValue + " and " + whatevs;
 	}
 
 	@GetMapping("/test4/{someValue}/{anotherValue}")
 	public @ResponseBody String test4(@PathVariable String someValue,
 			@PathVariable(value = "anotherValue", required = false) String whatevs) {
-		return "/spring-mvc-demo/test/test4 works! Provided values " + someValue + " and " + whatevs;
+		return "/spring-aop/test/test4 works! Provided values " + someValue + " and " + whatevs;
 	}
 
 	@GetMapping("/test5")
@@ -92,9 +94,21 @@ public class TestController {
 		throw new InvalidRequestException("hi");
 	}
 
-	@ExceptionHandler({ InvalidRequestException.class})
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public void handleInvalidExceptions(Exception e) {
-		System.out.println("Caught invalid Requst Exception: " + e.getMessage());
+	@GetMapping("/runtimeEx")
+	public void testRuntimeException(){
+		System.out.println("Oops runtime exception");
+		throw new RuntimeException("uh oh");
 	}
+
+	@GetMapping("/testAuthEx")
+	public void testAuthException() {
+		throw new AuthenticationException("authentication, no.");
+	}
+
+	@GetMapping("/testResourcePersistEx")
+	public void testResourcePersistenceException(){
+		System.out.println("Oops persistence exception");
+		throw new ResourcePersistenceException("uh oh");
+	}
+
 }
